@@ -1,0 +1,43 @@
+<% layout("/layouts/boilerplate.ejs") %>
+<body>
+    <br><br>
+    <h3>Create a new listing</h3>
+    <form action="/listings" method="post" class="needs-validation" novalidate>
+        <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" name="listing[title]" placeholder="enter catchy title" class="form-control" required><!--we are making a listing object which has all the pair in itsoo it will be easy for us to extract it-->
+        <div class="valid-feedback">Title looks good</div><!--this div provides a success and failure message in the form page-->
+        </div>
+
+        <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea type="text" name="listing[description]" placeholder="enter description" class="form-control" required></textarea>
+        </div>
+
+        <div class="mb-3">
+        <label for="image" class="form-label">Image</label>
+        <input type="text" name="listing[image]" placeholder="enter image URL/link" class="form-control" required>
+        <div class="invalid-feedback">Enter correct image URL</div><!--valid satnds for success and invalid stands foe failure and these are inbuilt class in bootstrap-->
+        </div>
+
+        <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input type="number" name="listing[price]" placeholder="1200" class="form-control" required>
+        <div class="invalid-feedback">Price should be valid </div>
+        </div>
+
+        <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input type="text" name="listing[location]" placeholder="Shimla" class="form-control" required>
+        <div class="invalid-feedback">location name should be valid </div>
+        </div>
+
+        <div class="mb-3">
+        <label for="country" class="form-label">Country</label>
+        <input type="text" name="listing[country]" placeholder="India" class="form-control" required>
+        <div class="invalid-feedback">Country name should be valid </div>
+        </div>
+        <button class="btn btn-dark add-btn">Add</button>
+    </form>
+    <br><br>
+</body>
