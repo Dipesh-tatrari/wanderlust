@@ -5,18 +5,9 @@ const Listing = require("../models/listing.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
 const {listingSchema, reviewSchema} = require("../schema.js");
-const{ isLoggedIn } = require("../middleware.js");
+const{ isLoggedIn, isOwner, validateListing} = require("../middleware.js");
 
-const validateListing = (req,res,next) =>{
-    let result = listingSchema.validate(req.body);
-    console.log(result);
-    if(result.error){
-        let errMsg = error.details.map((el) =>el.message).join(",");
-        throw new ExpressError(400, errMsg);
-    }else{
-        next();
-    }
-}
+
 
 //index route
 router.get("/",async (req,res)=>{
@@ -55,7 +46,7 @@ router.post("/",validateListing,wrapAsync(async (req,res)=>{//we are using valid
 }))
 
 //edit route
-router.get("/:id/edit",isLoggedIn,wrapAsync(async (req,res)=>{
+router.get("/:id/edit",isLoggedIn,isOwner,wrapAsync(async (req,res)=>{
     let {id} = req.params;
     const listing = await Listing.findById(id);
     if(!listing){
@@ -66,7 +57,7 @@ router.get("/:id/edit",isLoggedIn,wrapAsync(async (req,res)=>{
 }))
 
 //update route
-router.put("/:id",isLoggedIn,validateListing,wrapAsync(async (req,res)=>{//we are using validateListing as an middleware to validate the schema of the data entered
+router.put("/:id",isLoggedIn, isOwner,validateListing,wrapAsync(async (req,res)=>{//we are using validateListing as an middleware to validate the schema of the data entered
     // if(!req.body.listing) {
     //     throw new ExpressError(400,"send valid data for listing")//we are skipping these lines because we are validating the schema throught the validateSchema middleware
     // }
@@ -77,7 +68,7 @@ router.put("/:id",isLoggedIn,validateListing,wrapAsync(async (req,res)=>{//we ar
 }))
 
 //Delete route
-router.delete("/:id",isLoggedIn,wrapAsync(async (req,res)=>{
+router.delete("/:id",isLoggedIn,isOwner,wrapAsync(async (req,res)=>{
     let {id}= req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);//whenever this findbyIdanddelete is called the middleware that we have created in the listing.js will be called automatically
     console.log(deletedListing);//the middleware created in the listing.js is a post middleware, it will delete all the reviews of the listing ehich is deleted
