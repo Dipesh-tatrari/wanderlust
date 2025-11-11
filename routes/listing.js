@@ -26,7 +26,7 @@ router.get("/new",isLoggedIn,(req,res)=>{//specific routes are defined earlier a
 router.get("/:id",wrapAsync(async (req,res)=>{
      let {id} = req.params;
      console.log(id);
-     const listing = await Listing.findById(id).populate("reviews").populate("owner");
+     const listing = await Listing.findById(id).populate({path:"reviews",populate : {path: "author"},}).populate("owner");//this is to populate owner as a nested populate in the reviews
     //  console.log(listing);// i have done this to watch am i getting the array of reviews or not
     if(!listing){
         req.flash("error","listing not found");

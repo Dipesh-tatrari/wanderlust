@@ -6,7 +6,7 @@ const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
 const {listingSchema, reviewSchema} = require("../schema.js");
 const Review = require("../models/review.js");
-const{validatereview, isLoggedIn} = require("../middleware.js");
+const{validatereview, isLoggedIn, isReviewAuthor} = require("../middleware.js");
 
 
 
@@ -29,7 +29,7 @@ router.post("/",isLoggedIn, validatereview,wrapAsync(async(req, res) =>{//review
 }))
 
 //delete review route
-router.delete("/:reviewId",isLoggedIn, wrapAsync(async(req,res)=>{
+router.delete("/:reviewId",isLoggedIn,isReviewAuthor, wrapAsync(async(req,res)=>{
     let {id,reviewId} = req.params;
     await Listing.findByIdAndUpdate(id, {$pull: {reviews : reviewId}});//the pull operator removes form an existing array all instances of a value or values that match a specified condition
     await Review.findByIdAndDelete(id);
