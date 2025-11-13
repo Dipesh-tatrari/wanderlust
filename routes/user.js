@@ -8,18 +8,20 @@ const { saveRedirectTo } = require("../middleware.js");
 //signup controller
 const userController = require("../controllers/users.js");
 
-//user signup route
-router.get("/signup",userController.renderSignupForm);
+//signup routes
+router.route("/signup")
+    .get(userController.renderSignupForm)
+    .post(wrapAsync(userController.signup));
 
-router.post("/signup", wrapAsync(userController.signup));
 
 //login routes
-router.get("/login",userController.renderLoginForm);
-
-router.post("/login",saveRedirectTo, passport.authenticate("local",{
+router.route("/login")
+    .get(userController.renderLoginForm)
+    .post(saveRedirectTo, passport.authenticate("local",{
     failureFlash : true,
     failureRedirect : "/login"}), userController.login
 );
+
 
 //logout route
 router.get("/logout",userController.logout);

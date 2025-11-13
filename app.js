@@ -1,3 +1,6 @@
+require("dotenv").config();//this is to use the .env file
+console.log(process.env.SECRET);
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");

@@ -2,7 +2,7 @@
 <body>
     <br><br>
     <h3>Create a new listing</h3>
-    <form action="/listings" method="post" class="needs-validation" novalidate>
+    <form action="/listings" method="post" class="needs-validation" novalidate enctype="multipart/form-data"><!--we are using enctype="multipart/form-data" because we want to upload files-->
         <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input type="text" name="listing[title]" placeholder="enter catchy title" class="form-control" required><!--we are making a listing object which has all the pair in itsoo it will be easy for us to extract it-->
@@ -15,8 +15,8 @@
         </div>
 
         <div class="mb-3">
-        <label for="image" class="form-label">Image</label>
-        <input type="text" name="listing[image]" placeholder="enter image URL/link" class="form-control" required>
+        <label for="image" class="form-label">Upload listing Image</label>
+        <input type="file" name="listing[image]" class="form-control" required>
         <div class="invalid-feedback">Enter correct image URL</div><!--valid satnds for success and invalid stands foe failure and these are inbuilt class in bootstrap-->
         </div>
 
