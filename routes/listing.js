@@ -8,12 +8,16 @@ const {listingSchema, reviewSchema} = require("../schema.js");
 const{ isLoggedIn, isOwner, validateListing} = require("../middleware.js");//requiring middlewares from middleware file
 const listingController = require("../controllers/listings.js");
 
+const multer = require("multer");//we require multer for file uploading
+const {storage} = require("../cloudConfig.js");//we are requiring the storage from cloudConfig.js
+const upload = multer({storage});//this is the multer configuration to use cloudinary as the storage engine
+
 
 router.route("/")
     //index route
     .get(wrapAsync(listingController.index))
     //post  request for create
-    .post(isLoggedIn, validateListing, wrapAsync(listingController.createListing));
+    .post(isLoggedIn, validateListing, upload.single('listing[image]'), wrapAsync(listingController.createListing));
 
 
 

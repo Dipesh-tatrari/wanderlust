@@ -10,9 +10,8 @@ const listingSchema = new Schema({
     },
     description : String,
     image : {
-        type :String,
-        default : "https://unsplash.com/photos/wooden-path-winds-through-a-misty-forest-at-sunset-UpNwL3hTcRg",//this default will always be applied if there is no image given
-        set :(v)=> v===" "?"https://unsplash.com/photos/wooden-path-winds-through-a-misty-forest-at-sunset-UpNwL3hTcRg":v// and this value will be applied if there is imaghe string but it is empty
+        url :String,
+        filename: String,
     },
     price : String,
     location : String,

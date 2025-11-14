@@ -26,10 +26,14 @@ module.exports.showListing = async (req,res)=>{
 }
 
 //post  request for create
-module.exports.createListing = async (req,res)=>{//we are using validateListing as an middleware to validate the schema of the data entered
+module.exports.createListing = async (req,res,next)=>{//we are using validateListing as an middleware to validate the schema of the data entered
         // let{title,description,image,price,loacation,country} = req.body; there is a much better way of doing that by creating a listing object in the ejs page 
+        let url = req.file.path;
+        let filename = req.file.filename;
         let newListing = new Listing(req.body.listing);
         newListing.owner = req.user._id;//we are setting the owner of the listing to the currently logged in user
+        newListing.image = {url, filename};//we are setting the image property of the listing to an object containing url and filename
+        console.log(newListing);
         await newListing.save();
         req.flash("success","Successfully created a new listing");
         res.redirect("/listings");    

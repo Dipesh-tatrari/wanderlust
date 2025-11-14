@@ -1,4 +1,7 @@
-require("dotenv").config();//this is to use the .env file
+if (process.env.NODE_ENV !== "production"){//this is done to make sure that the dotenv package is only used in development mode and not in production mode
+    require("dotenv").config();//this will load the .env file and make the variables available in process.env
+}
+
 console.log(process.env.SECRET);
 
 const express = require("express");
