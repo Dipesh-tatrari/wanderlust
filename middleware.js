@@ -27,7 +27,7 @@ module.exports.saveRedirectTo = (req,res,next) =>{
 module.exports.isOwner = async(req,res,next) =>{
     let {id}= req.params;
         let listing = await Listing.findById(id);
-        if(!listing.owner._id.equals(currentUser._id)){//we are checking if the owner of the listing is the same as the currently logged in user
+        if(!listing.owner._id.equals(req.user._id)){//we are checking if the owner of the listing is the same as the currently logged in user
             req.flash("error","You do not have permission to do that");
             return res.redirect(`/listings/${id}`);
         }

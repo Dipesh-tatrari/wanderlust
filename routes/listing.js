@@ -17,7 +17,7 @@ router.route("/")
     //index route
     .get(wrapAsync(listingController.index))
     //post  request for create
-    .post(isLoggedIn, validateListing, upload.single('listing[image]'), wrapAsync(listingController.createListing));
+    .post(isLoggedIn, upload.single('listing[image]'), validateListing, wrapAsync(listingController.createListing));
 
 
 
@@ -28,7 +28,7 @@ router.route("/:id")
     //show route
     .get(wrapAsync(listingController.showListing))
     //update route
-    .put(isLoggedIn, isOwner, validateListing, wrapAsync(listingController.updateListing))//we are using validateListing as an middleware to validate the schema of the data entered
+    .put(isLoggedIn, isOwner, upload.single('listing[image]'), validateListing, wrapAsync(listingController.updateListing))//we are using validateListing as an middleware to validate the schema of the data entered
     //delete route
     .delete(isLoggedIn, isOwner, wrapAsync(listingController.destroyListing));
 
