@@ -1,6 +1,76 @@
 <% layout("/layouts/boilerplate.ejs") %>
 <body>
-    <h2>All listings</h3>
+    <style>
+        .filters{
+            display: flex;
+            gap: 2rem;
+        }
+        .filter{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top : 1rem;
+            opacity : 0.7;
+        }
+        .filter:hover{
+            opacity : 1;
+            cursor: pointer;
+        }
+        .filter div{
+            background-color: #f0f0f0;
+            padding: 1rem;
+            border-radius: 50%;
+            font-size: 1.5rem;
+        }
+        .filter p{
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+    </style>
+    <div class="filters">
+        <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>Trending</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-bed"></i></div>
+            <p>Rooms</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-mountain-city"></i></div>
+            <p>Iconic cities</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-mountain"></i></div>
+            <p>Mountains</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-brands fa-fort-awesome"></i></div>
+            <p>Catles</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-person-swimming"></i></div>
+            <p>Amazing pools</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-campground"></i></div>
+            <p>Camping</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-tractor"></i></div>
+            <p>Farms</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-snowflake"></i></div>
+            <p>Arctic</p>
+        </div>
+        <div class="tax-toggle">
+            <div class="form-check-reverse form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+                <label class="form-check-label" for="switchCheckDefault">Display Taxes</label>
+            </div>
+        </div>
+    </div>
 <div class="row row-cols-lg-3 row-cols-md-2">
     <% for(let listing of allListings){ %>
         <a href="/listings/<%= listing._id %>">

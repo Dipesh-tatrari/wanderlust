@@ -1,4 +1,7 @@
 const Listing = require("../models/listing");
+const {geocode} = require("../public/js/map.js");
+const ExpressError = require("../utils/ExpressError");
+
 
 //index route
 module.exports.index = async (req,res)=>{
@@ -31,6 +34,13 @@ module.exports.createListing = async (req,res,next)=>{//we are using validateLis
         // let{title,description,image,price,loacation,country} = req.body; there is a much better way of doing that by creating a listing object in the ejs page 
         let url = req.file.path;
         let filename = req.file.filename;
+        let location = req.body.listing.location;
+        let geoData = await geocode(location);
+        req.body.listing.geometry = {
+            lat: parseFloat(geoData[0].lat),
+            lng: parseFloat(geoData[0].lon)
+        };
+        console.log(req.body.listing);
         let newListing = new Listing(req.body.listing);
         newListing.owner = req.user._id;//we are setting the owner of the listing to the currently logged in user
         newListing.image = {url, filename};//we are setting the image property of the listing to an object containing url and filename

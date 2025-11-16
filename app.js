@@ -75,9 +75,6 @@ async function main() {
   // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 }
 
-app.get("/",(req,res)=>{
-    res.send("root is working");
-})
 
 //this is the making of function for the validaion of the listing, it's schema was created in the schema.js with the help of joi to validate sever side data
 const validateListing = (req,res,next) =>{
