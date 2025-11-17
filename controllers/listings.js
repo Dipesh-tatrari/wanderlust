@@ -20,7 +20,6 @@ module.exports.showListing = async (req,res)=>{
      let {id} = req.params;
      console.log(id);
      const listing = await Listing.findById(id).populate({path:"reviews",populate : {path: "author"},}).populate("owner");//this is to populate owner as a nested populate in the reviews
-     console.log(listing);
     //  console.log(listing);// i have done this to watch am i getting the array of reviews or not
     if(!listing){
         req.flash("error","listing not found");
@@ -40,11 +39,9 @@ module.exports.createListing = async (req,res,next)=>{//we are using validateLis
             lat: parseFloat(geoData[0].lat),
             lng: parseFloat(geoData[0].lon)
         };
-        console.log(req.body.listing);
         let newListing = new Listing(req.body.listing);
         newListing.owner = req.user._id;//we are setting the owner of the listing to the currently logged in user
         newListing.image = {url, filename};//we are setting the image property of the listing to an object containing url and filename
-        console.log(newListing);
         await newListing.save();
         req.flash("success","Successfully created a new listing");
         res.redirect("/listings");    

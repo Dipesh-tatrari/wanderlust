@@ -12,7 +12,8 @@ const path = require("path");
 const methodOverride = require("method-override");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
-const session = require("express-session");
+const session = require("express-session");//compulsory for passport to work and always required before connect-mongo
+const MongoStore = require("connect-mongo");//this is to store the session in the mongo database for production use
 const flash = require("connect-flash");
 const ejsMate = require("ejs-mate");
 const passport = require("passport");
@@ -27,6 +28,9 @@ const listingrouter = require("./routes/listing.js");
 const reviewrouter = require("./routes/review.js");
 const userrouter = require("./routes/user.js");
 
+//requiring db connection
+require("dotenv").config();
+const dbUrl = process.env.ATLASDB_URL
 
 const port = 8080;
 
@@ -38,7 +42,7 @@ app.engine("ejs",ejsMate);
 app.use(express.static(path.join(__dirname,"/public"))); 
 
 const sessionConfig = {
-    secret : "mysupersecretcode",
+    secret : process.env.SECRET ,
     resave : false,
     saveUninitialized : true,
     cookie : {//if cookies don't have these properties then they are called session cookies and they get deleted when the browser is closed
@@ -48,6 +52,21 @@ const sessionConfig = {
     }
 };//if there is not http tnen the cookie can be accessed by the client side script which is not good for security and this is called cross site scripting attack
 //this is the configuration for the session
+
+//this is to store the session in the mongo database for production use
+const store = MongoStore.create({
+    mongoUrl : dbUrl,
+    touchAfter : 24*60*60,//this is to update the session only once in 24 hours even if there are multiple requests from the same user
+    crypto : {
+        secret : process.env.SECRET,
+    }
+});
+
+store.on("error", function(e){
+    console.log("SESSION STORE ERROR", e);
+});
+
+sessionConfig.store = store;
 
 app.use(session(sessionConfig));//this is to use the session in our app
 app.use(flash());//this is to use the flash in our app
@@ -70,7 +89,7 @@ main().then(()=>{
 });
 
 async function main() {
-  await mongoose.connect('mongodb://localhost:27017/wanderLust');
+  await mongoose.connect(dbUrl);
 
   // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 }
