@@ -115,14 +115,9 @@ app.use((req,res,next)=>{
     next();
 })
 
-app.get("/fakeUser", async(req,res)=>{
-    const user = new User({
-        email : "fakeuser@example.com",
-        username : "fakeuser"
-    });     
-    const newUser = await User.register(user,"chicken");
-    res.send(newUser);
-});
+app.get("/",(req,res)=>{
+    res.redirect("/listings");
+})
 
 app.use("/listings",listingrouter);
 app.use("/listings/:id/reviews",reviewrouter);
